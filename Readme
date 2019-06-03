@@ -1,0 +1,26 @@
+后台若是报错：
+java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
+
+pom中改springboot的版本为1.5.8.RELEASE（2.1.4.RELEASE就踩坑啦，2.0.3也是）
+当然，这个方法只适合小demo。大项目直接改这个，你会被领导diss
+<parent>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-parent</artifactId>
+   <version>1.5.8.RELEASE</version>
+   <relativePath/>
+</parent>
+
+解决办法二：
+创建PasswordEncorder的实现类。
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+public class MyPasswordEncoder implements PasswordEncoder {
+   @Override
+    public String encode(CharSequence charSequence) {
+        return charSequence.toString();
+    }
+   @Override
+    public boolean matches(CharSequence charSequence, String s) {
+ 		return s.equals(charSequence.toString());
+    }
+}
